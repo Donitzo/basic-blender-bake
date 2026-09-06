@@ -37,7 +37,7 @@ def bake(
     ao_strength=1.0,
     ao_samples=64,
     illumination_strength=1.0,
-    lighting_samples=256,
+    lighting_samples=1024,
 ):
     scene = bpy.context.scene
 
@@ -686,7 +686,7 @@ class OBJECT_OT_bake_atlas(bpy.types.Operator):
 
     lighting_samples: bpy.props.IntProperty(
         name='Bake Lighting Samples',
-        default=256,
+        default=1024,
         min=1,
     )
 
