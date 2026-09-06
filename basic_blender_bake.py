@@ -40,6 +40,12 @@ def bake(
 ):
     scene = bpy.context.scene
 
+    external_objects = [ obj for obj in scene.objects if obj not in objects]
+    external_hide_render = { obj: obj.hide_render for obj in external_objects }
+
+    for obj in external_objects:
+        obj.hide_render = True
+
     # Find mesh objects
 
     mesh_objects = []
@@ -99,7 +105,7 @@ def bake(
         area_weight=0.0,
         correct_aspect=True,
     )
-
+    
     # Normalize island scale to roughly the same texel density
 
     bpy.ops.uv.average_islands_scale()
@@ -150,9 +156,9 @@ def bake(
             height=atlas_size,
         )
         normal_image.colorspace_settings.name = 'Non-Color'
-
+    
     bake_emission_illumination = bake_emission and illumination_strength > 0.0 and not bake_lights
-
+    
     if bake_emission:
         if bake_emission_illumination:
             illumination_image = bpy.data.images.new(
@@ -202,7 +208,7 @@ def bake(
 
     scene.render.engine = 'CYCLES'
     scene.cycles.device = 'GPU'
-
+    
     scene.world.light_settings.distance = ao_distance
 
     # Get objects marked as dynamic vs static
@@ -225,7 +231,7 @@ def bake(
         obj.select_set(True)
 
     clear_color = True
-
+        
     # Bake all static objects together
 
     if global_objects:
@@ -265,7 +271,7 @@ def bake(
         )
 
         clear_color = False
-
+        
     for obj in mesh_objects:
         obj.hide_render = False
 
@@ -296,8 +302,8 @@ def bake(
     if bake_emission:
         if bake_emission_illumination:
             # Remove lighting
-
-            background = None
+                 
+            background = None       
             world = scene.world
             if world is not None and world.use_nodes and world.node_tree is not None:
                 background = world.node_tree.nodes.get('Background')
@@ -317,7 +323,7 @@ def bake(
             set_bake_target(illumination_image)
 
             scene.cycles.samples = lighting_samples
-
+            
             bpy.ops.object.select_all(action='DESELECT')
 
             for obj in mesh_objects:
@@ -325,9 +331,9 @@ def bake(
 
             for obj in global_objects:
                 obj.select_set(True)
-
+            
             clear_illumination = True
-
+            
             if global_objects:
                 bpy.context.view_layer.objects.active = global_objects[0]
 
@@ -339,7 +345,7 @@ def bake(
                     use_clear=clear_illumination,
                     uv_layer='BakeUV',
                 )
-
+                
                 clear_illumination = False
 
             for local_object in local_objects:
@@ -362,7 +368,7 @@ def bake(
                 )
 
                 clear_illumination = False
-
+                
             for obj in mesh_objects:
                 obj.hide_render = False
 
@@ -373,7 +379,7 @@ def bake(
                 bake_object.select_set(True)
 
             bpy.context.view_layer.objects.active = mesh_objects[0]
-
+            
             # Reset lighting
 
             if background is not None:
@@ -418,7 +424,7 @@ def bake(
     scene.cycles.samples = ao_samples
 
     bpy.ops.object.select_all(action='DESELECT')
-
+    
     for obj in mesh_objects:
         obj.hide_render = obj in local_objects
 
@@ -462,7 +468,7 @@ def bake(
 
     for obj in mesh_objects:
         obj.hide_render = False
-
+    
     # Remove temporary image target nodes
 
     for material, target in target_nodes.items():
@@ -505,7 +511,7 @@ def bake(
     del ao_pixels
 
     bpy.data.images.remove(ao_image)
-
+        
     if bake_emission:
         emission_pixels = array('f', [0.0]) * pixel_count
         emission_image.pixels.foreach_get(emission_pixels)
@@ -520,14 +526,14 @@ def bake(
                 emission_pixels[i + 2] += illumination_pixels[i + 2] * illumination_strength
 
             bpy.data.images.remove(illumination_image)
-
+            
             del illumination_pixels
 
         emission_image.pixels.foreach_set(emission_pixels)
         emission_image.update()
-
+        
         del emission_pixels
-
+    
     # Create the baked material
 
     baked_material = bpy.data.materials.new(name='BakedDiffuse')
@@ -588,6 +594,9 @@ def bake(
 
         for polygon in obj.data.polygons:
             polygon.material_index = 0
+
+    for obj, hidden in external_hide_render.items():
+        obj.hide_render = hidden
 
     print(f'Baked {len(mesh_objects)} objects to {atlas_size}x{atlas_size} atlas')
 
