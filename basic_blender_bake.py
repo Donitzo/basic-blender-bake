@@ -643,7 +643,7 @@ class OBJECT_OT_bake_atlas(bpy.types.Operator):
     )
 
     bake_lights: bpy.props.BoolProperty(
-        name='Bake Lights (disable for ingaming lighting)',
+        name='Bake Lights (disable for ingame lighting)',
         default=False,
     )
 
