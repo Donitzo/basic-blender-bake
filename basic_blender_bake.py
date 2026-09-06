@@ -64,6 +64,10 @@ def bake(
 
     # Create the separate bake UV if it does not exist
 
+    if bpy.context.object is not None:
+        if bpy.context.object.mode != 'OBJECT':
+            bpy.ops.object.mode_set(mode='OBJECT')
+
     for obj in mesh_objects:
         old_render_uv = None
 
@@ -81,10 +85,6 @@ def bake(
             old_render_uv.active_render = True
 
     # Select all meshes and all polygons
-
-    if bpy.context.object is not None:
-        if bpy.context.object.mode != 'OBJECT':
-            bpy.ops.object.mode_set(mode='OBJECT')
 
     bpy.ops.object.select_all(action='DESELECT')
 
