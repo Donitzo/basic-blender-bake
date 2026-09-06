@@ -40,7 +40,8 @@ def bake(
 ):
     scene = bpy.context.scene
 
-    external_objects = [ obj for obj in scene.objects if obj not in objects]
+    objects_set = set(objects)
+    external_objects = [obj for obj in scene.objects if obj not in objects_set]
     external_hide_render = { obj: obj.hide_render for obj in external_objects }
 
     for obj in external_objects:
