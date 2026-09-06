@@ -10,6 +10,8 @@ Simply install `basic_blender_bake.py` as an addon in Blender. You can also call
 
 **Note**: Always backup your file before baking. This should always be the last step done before an export.
 
+![Properties](images/properties.png)
+
 ## Limitations
 
 The baker is inherently using the Cycles renderer. There is currently no denoising. The larger the texture atlas is and the more lighting samples you use, the less noise there will be, but it will also take significantly longer to run.
@@ -22,4 +24,7 @@ The baker is inherently using the Cycles renderer. There is currently no denoisi
 | **No Baked Lights — Lit** | **No Baked Lights — Unlit** |
 | ![Without baked lights (lit)](images/no_baked_lights_lit.png) | ![Without baked lights (unlit)](images/no_baked_lights_unlit.png) |
 
+**Baked ambient occlusion**
+
+![AO](images/ambient_occlusion.png)
 
