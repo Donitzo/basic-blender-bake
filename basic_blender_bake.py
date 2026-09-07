@@ -1012,11 +1012,11 @@ class OBJECT_OT_bake_atlas(bpy.types.Operator):
         ensure_packages()
 
         wm = context.window_manager
-        wm.progress_begin(0, 99)
+        wm.progress_begin(0, 100)
         wm.progress_update(0)
 
         def update_progress(value):
-            wm.progress_update(int(value * 99))
+            wm.progress_update(int(value * 100))
 
         bake(
             objects,
