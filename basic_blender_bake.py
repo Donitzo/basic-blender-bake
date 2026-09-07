@@ -108,6 +108,7 @@ def pack_atlases(
             bpy.ops.uv.pack_islands(
                 rotate=True,
                 scale=not real_margin,
+                rotate='CARDINAL',
                 merge_overlap=False,
                 margin_method='ADD',
                 margin=float(margin_pixels) / effective_pixels_per_uv_unit if real_margin else 0.0,
