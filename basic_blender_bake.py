@@ -75,7 +75,9 @@ def pack_atlases(
 
         # UV unwrap the object
 
-        bpy.ops.object.mode_set(mode='OBJECT')
+        if bpy.context.object is not None:
+            if bpy.context.object.mode != 'OBJECT':
+                bpy.ops.object.mode_set(mode='OBJECT')
         bpy.ops.object.select_all(action='DESELECT')
 
         obj.hide_set(False)
