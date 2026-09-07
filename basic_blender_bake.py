@@ -86,6 +86,7 @@ def pack_atlases(
         bpy.context.view_layer.objects.active = obj
 
         bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.reveal()
         bpy.ops.mesh.select_all(action='SELECT')
 
         bpy.ops.uv.smart_project(
