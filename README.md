@@ -1,6 +1,6 @@
 ![Logo](images/logo.png)
 
-This is a very simple (and somewhat flawed) texture baker for Blender. The addon automatically UV unwraps all meshes in the scene and destructively bakes their materials into texture atlases.
+This is a very simple (and somewhat flawed) texture baker for Blender. The addon automatically UV unwraps all meshes in the scene and destructively bakes their materials into texture atlases. Multiple atlases are created to fit the baked textures into the desired texel size.
 
 When not baking lights, the baker can bake indirect illumination cast by emissive materials into the emission texture. When baking lights, direct and indirect illumination is baked into the diffuse texture, while the emission texture contains only material emission.
 
